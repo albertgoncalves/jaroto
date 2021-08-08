@@ -1,0 +1,7 @@
+*
+!.gitignore
+!*.nix
+!.shellhook
+!.clang-format
+!src/
+!*.java
