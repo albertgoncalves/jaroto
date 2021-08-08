@@ -3,8 +3,19 @@ import java.util.Scanner;
 // NOTE: See `https://codeforces.com/gym/102646/problem/D`.
 // NOTE: See `https://codeforces.com/blog/entry/80150`.
 
+/* NOTE: $ 5 4
+ *         5 9 10 3 2
+ *         10 10 5 5
+ *       > 215
+ * NOTE: $ 7 4
+ *         1 9 3 8 19 3 2
+ *         50 1 9 3
+ *       > 638
+ */
+
 public class TeamSelection {
-    static long[] toLongs(String[] input) {
+    static long[] parse(Scanner scanner) {
+        String[] input = scanner.nextLine().split(" ");
         long[] output = new long[input.length];
         for (int i = 0; i < input.length; ++i) {
             output[i] = Long.parseLong(input[i]);
@@ -13,11 +24,14 @@ public class TeamSelection {
     }
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        scanner.nextLine();
-        long[] a = toLongs(scanner.nextLine().split(" "));
-        long[] b = toLongs(scanner.nextLine().split(" "));
-        scanner.close();
+        long[] a, b;
+        {
+            Scanner scanner = new Scanner(System.in);
+            scanner.nextLine();
+            a = parse(scanner);
+            b = parse(scanner);
+            scanner.close();
+        }
         {
             int n = a.length;
             int k = b.length;
