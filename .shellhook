@@ -7,9 +7,10 @@ if [ ! -d "$WD/build" ]; then
 fi
 
 export flags=(
-    --release 8
+    -deprecation
     -g:none
     -Werror
+    -Xmaxerrs 1
 )
 
 runj () {
@@ -20,3 +21,4 @@ runj () {
 }
 
 export -f runj
+alias javap="javap -v -l -c -s -p -constants"
