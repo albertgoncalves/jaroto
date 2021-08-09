@@ -17,7 +17,7 @@ runj () {
     handle=$(echo "$1" | sed 's/^[a-z\/]*\/\(.*\)\.[a-z]*$/\1/')
     clang-format -i -verbose "$1" || return
     javac "${flags[@]}" -d "$WD/build" "$WD/$1" || return
-    java -cp .:"$WD/build" "$handle"
+    java -ea -cp .:"$WD/build" "$handle"
 }
 
 export -f runj
