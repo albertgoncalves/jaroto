@@ -10,6 +10,7 @@ export flags=(
     -deprecation
     -g:none
     -Werror
+    -Xlint:all
     -Xmaxerrs 1
 )
 
