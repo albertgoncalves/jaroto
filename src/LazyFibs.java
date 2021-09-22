@@ -50,7 +50,7 @@ class List<T> {
 }
 
 public class LazyFibs {
-    public static List<Long> fibs;
+    static List<Long> fibs;
 
     static List<Long> zipSum(List<Long> xs, List<Long> ys) {
         return new List<Long>(xs.head() + ys.head(), new F0(xs, ys));
