@@ -24,8 +24,8 @@ class Lazy<T> {
 }
 
 class List<T> {
-    T             value;
-    Lazy<List<T>> thunk;
+    final T value;
+    final Lazy<List<T>> thunk;
 
     public List(T v, Func<List<T>> f) {
         value = v;
@@ -57,8 +57,8 @@ public class LazyFibs {
     }
 
     static class F0 implements Func<List<Long>> {
-        List<Long> xs;
-        List<Long> ys;
+        final List<Long> xs;
+        final List<Long> ys;
 
         public F0(List<Long> l0, List<Long> l1) {
             xs = l0;
