@@ -1,15 +1,15 @@
-interface Func<T> {
-    T eval();
-}
-
 class Lazy<T> {
-    T       result;
-    Func<T> func;
-    boolean cached;
+    T        result;
+    Defer<T> defer;
+    boolean  cached;
 
-    public Lazy(Func<T> f) {
+    public interface Defer<T> {
+        T eval();
+    }
+
+    public Lazy(Defer<T> d) {
         result = null;
-        func = f;
+        defer = d;
         cached = false;
     }
 
@@ -17,7 +17,7 @@ class Lazy<T> {
         if (cached) {
             return result;
         }
-        result = func.eval();
+        result = defer.eval();
         cached = true;
         return result;
     }
@@ -27,9 +27,9 @@ class List<T> {
     final T value;
     final Lazy<List<T>> thunk;
 
-    public List(T v, Func<List<T>> f) {
+    public List(T v, Lazy.Defer<List<T>> d) {
         value = v;
-        thunk = new Lazy<List<T>>(f);
+        thunk = new Lazy<List<T>>(d);
     }
 
     public T head() {
@@ -56,7 +56,7 @@ public class LazyFibs {
         return new List<Long>(xs.head() + ys.head(), new F0(xs, ys));
     }
 
-    static class F0 implements Func<List<Long>> {
+    static class F0 implements Lazy.Defer<List<Long>> {
         final List<Long> xs;
         final List<Long> ys;
 
@@ -70,13 +70,13 @@ public class LazyFibs {
         }
     }
 
-    static class F1 implements Func<List<Long>> {
+    static class F1 implements Lazy.Defer<List<Long>> {
         public List<Long> eval() {
             return zipSum(fibs, fibs.tail());
         }
     }
 
-    static class F2 implements Func<List<Long>> {
+    static class F2 implements Lazy.Defer<List<Long>> {
         public List<Long> eval() {
             return new List<Long>(1L, new F1());
         }
