@@ -1,5 +1,5 @@
 with import <nixpkgs> {};
-mkShell.override { stdenv = llvmPackages_12.stdenv; } {
+mkShell.override { stdenv = llvmPackages_16.stdenv; } {
     buildInputs = [
         openjdk
         shellcheck
