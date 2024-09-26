@@ -7,18 +7,21 @@ if [ ! -d "$WD/build" ]; then
 fi
 
 export flags=(
+    -classpath "$WD/build"
+    -d "$WD/build"
     -deprecation
-    -g:none
+    -g
+    -source 21 --enable-preview
     -Werror
     -Xlint:all
     -Xmaxerrs 1
 )
 
 runj () {
-    handle=$(echo "$1" | sed 's/^[a-z\/]*\/\(.*\)\.[a-z]*$/\1/')
+    handle=$(basename "${1%%.*}")
     clang-format -i -verbose "$1" || return
-    javac "${flags[@]}" -d "$WD/build" "$WD/$1" || return
-    java -ea -cp .:"$WD/build" "$handle"
+    javac "${flags[@]}" "$1" || return
+    java --enable-preview -ea -cp .:"$WD/build" "$handle"
 }
 
 export -f runj
