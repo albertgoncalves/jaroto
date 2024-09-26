@@ -21,7 +21,7 @@ public class MinCostPath {
 
     public static void main(String[] args) {
         int[][] costs = {{1, 2, 3}, {4, 8, 2}, {1, 5, 3}};
-        assert minCost(costs, 2, 2) == 8;
+        assert  minCost(costs, 2, 2) == 8;
         System.out.println("Done!");
     }
 }

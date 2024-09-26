@@ -16,7 +16,7 @@ import java.util.Scanner;
 public class TeamSelection {
     static long[] parse(Scanner scanner) {
         String[] input = scanner.nextLine().split(" ");
-        long[] output = new long[input.length];
+        long[]   output = new long[input.length];
         for (int i = 0; i < input.length; ++i) {
             output[i] = Long.parseLong(input[i]);
         }
@@ -33,8 +33,8 @@ public class TeamSelection {
             scanner.close();
         }
         {
-            int n = a.length;
-            int k = b.length;
+            int      n = a.length;
+            int      k = b.length;
             long[][] table = new long[n + 1][k + 1];
             for (int i = 0; i <= n; ++i) {
                 for (int j = 0; j <= k; ++j) {
