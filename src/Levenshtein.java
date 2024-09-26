@@ -22,10 +22,8 @@ public class Levenshtein {
             for (int j = 1; j <= n; ++j) {
                 table[i][j] = Math.min(
                     table[i - 1][j] + 1,
-                    Math.min(
-                        table[i][j - 1] + 1,
-                        table[i - 1][j - 1] +
-                            ((a.charAt(i - 1) == b.charAt(j - 1)) ? 0 : 1)));
+                    Math.min(table[i][j - 1] + 1,
+                             table[i - 1][j - 1] + ((a.charAt(i - 1) == b.charAt(j - 1)) ? 0 : 1)));
             }
         }
         return table[m][n];

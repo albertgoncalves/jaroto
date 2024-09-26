@@ -21,13 +21,11 @@ public class Trampoline {
         if (m == 0) {
             thunks.addLast(() -> { k.run(n + 1); });
         } else if (n == 0) {
-            thunks.addLast(
-                () -> { ackermannPeterCpsTrampoline(k, m - 1, 1); });
+            thunks.addLast(() -> { ackermannPeterCpsTrampoline(k, m - 1, 1); });
         } else {
             thunks.addLast(() -> {
                 ackermannPeterCpsTrampoline((x) -> {
-                    thunks.addLast(
-                        () -> { ackermannPeterCpsTrampoline(k, m - 1, x); });
+                    thunks.addLast(() -> { ackermannPeterCpsTrampoline(k, m - 1, x); });
                 }, m, n - 1);
             });
         }
@@ -38,9 +36,7 @@ public class Trampoline {
         for (int i = 0; i < 11; ++i) {
             final int n = i;
             thunks.addLast(() -> {
-                ackermannPeterCpsTrampoline((int x) -> {
-                    System.out.println(x);
-                }, m, n);
+                ackermannPeterCpsTrampoline((int x) -> { System.out.println(x); }, m, n);
             });
             runAll();
         }

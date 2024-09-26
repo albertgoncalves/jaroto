@@ -47,8 +47,7 @@ public class TeamSelection {
                     table[i + 1][j] = Math.max(table[i + 1][j], table[i][j]);
                     if (j < k) {
                         table[i + 1][j + 1] =
-                            Math.max(table[i + 1][j + 1],
-                                     table[i][j] + (a[i] * b[j]));
+                            Math.max(table[i + 1][j + 1], table[i][j] + (a[i] * b[j]));
                     }
                 }
             }

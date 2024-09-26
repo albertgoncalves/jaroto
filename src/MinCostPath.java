@@ -10,10 +10,8 @@ public class MinCostPath {
         }
         for (int i = 1; i <= m; ++i) {
             for (int j = 1; j <= n; ++j) {
-                table[i][j] =
-                    costs[i][j] +
-                    Math.min(table[i - 1][j - 1],
-                             Math.min(table[i][j - 1], table[i - 1][j]));
+                table[i][j] = costs[i][j] + Math.min(table[i - 1][j - 1],
+                                                     Math.min(table[i][j - 1], table[i - 1][j]));
             }
         }
         return table[m][n];
