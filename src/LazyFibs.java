@@ -48,22 +48,29 @@ public class LazyFibs {
     }
 
     static <T> List<T> zipWith(Func<T> func, List<T> xs, List<T> ys) {
-        return new List<T>(func.call(xs.head, ys.head), new Lazy<List<T>>(() -> {
-                               return zipWith(func, xs.tail(), ys.tail());
-                           }));
+        // clang-format off
+        return new List<T>(
+            func.call(xs.head, ys.head),
+            new Lazy<List<T>>(() -> {
+                return zipWith(func, xs.tail(), ys.tail());
+            })
+        );
+        // clang-format on
     }
 
     static List<Long> fibs;
 
     public static void main(String[] args) {
+        // clang-format off
         fibs = new List<Long>(0L, new Lazy<List<Long>>(() -> {
-                                  return new List<Long>(1L, new Lazy<List<Long>>(() -> {
-                                                            return zipWith((Long a, Long b) -> {
-                                                                return a + b;
-                                                            }, fibs, fibs.tail());
-                                                        }));
-                              }));
-        Long x = fibs.drop(50).head;
+            return new List<Long>(1L, new Lazy<List<Long>>(() -> {
+                return zipWith((Long a, Long b) -> {
+                    return a + b;
+                }, fibs, fibs.tail());
+            }));
+        }));
+        // clang-format on
+        final Long x = fibs.drop(50).head;
         System.out.println(x);
         assert x == 12586269025L;
     }
