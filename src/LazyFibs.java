@@ -1,90 +1,69 @@
 class Lazy<T> {
-    T        result;
-    Defer<T> defer;
-    boolean  cached;
+    final Func<T> func;
+    private T value;
+    Func<T> cache;
 
-    public interface Defer<T> {
-        T eval();
+    interface Func<T> {
+        T call();
     }
 
-    public Lazy(Defer<T> d) {
-        result = null;
-        defer = d;
-        cached = false;
+    private T force() {
+        this.value = func.call();
+        this.cache = () -> this.value;
+        return this.value;
     }
 
-    public T force() {
-        if (cached) {
-            return result;
-        }
-        result = defer.eval();
-        cached = true;
-        return result;
+    public Lazy(Func<T> func) {
+        this.value = null;
+        this.func = func;
+        this.cache = () -> this.force();
     }
 }
 
 class List<T> {
-    final T value;
-    final Lazy<List<T>> thunk;
+    final T head;
+    private final Lazy<List<T>> _tail;
 
-    public List(T v, Lazy.Defer<List<T>> d) {
-        value = v;
-        thunk = new Lazy<List<T>>(d);
-    }
-
-    public T head() {
-        return value;
+    public List(T head, Lazy<List<T>> tail) {
+        this.head = head;
+        this._tail = tail;
     }
 
     public List<T> tail() {
-        return thunk.force();
+        return this._tail.cache.call();
     }
 
     public List<T> drop(int n) {
-        List<T> l = this;
+        List<T> list = this;
         for (; 0 < n; --n) {
-            l = l.tail();
+            list = list.tail();
         }
-        return l;
+        return list;
     }
 }
 
 public class LazyFibs {
+    interface Func<T> {
+        T call(T a, T b);
+    }
+
+    static <T> List<T> zipWith(Func<T> func, List<T> xs, List<T> ys) {
+        return new List<T>(func.call(xs.head, ys.head), new Lazy<List<T>>(() -> {
+                               return zipWith(func, xs.tail(), ys.tail());
+                           }));
+    }
+
     static List<Long> fibs;
 
-    static List<Long> zipSum(List<Long> xs, List<Long> ys) {
-        return new List<Long>(xs.head() + ys.head(), new F0(xs, ys));
-    }
-
-    static class F0 implements Lazy.Defer<List<Long>> {
-        final List<Long> xs;
-        final List<Long> ys;
-
-        public F0(List<Long> l0, List<Long> l1) {
-            xs = l0;
-            ys = l1;
-        }
-
-        public List<Long> eval() {
-            return zipSum(xs.tail(), ys.tail());
-        }
-    }
-
-    static class F1 implements Lazy.Defer<List<Long>> {
-        public List<Long> eval() {
-            return zipSum(fibs, fibs.tail());
-        }
-    }
-
-    static class F2 implements Lazy.Defer<List<Long>> {
-        public List<Long> eval() {
-            return new List<Long>(1L, new F1());
-        }
-    }
-
     public static void main(String[] args) {
-        fibs = new List<Long>(0L, new F2());
-        Long x = fibs.drop(50).head();
+        fibs = new List<Long>(0L, new Lazy<List<Long>>(() -> {
+                                  return new List<Long>(1L, new Lazy<List<Long>>(() -> {
+                                                            return zipWith((Long a, Long b) -> {
+                                                                return a + b;
+                                                            }, fibs, fibs.tail());
+                                                        }));
+                              }));
+        Long x = fibs.drop(50).head;
         System.out.println(x);
         assert x == 12586269025L;
     }
