@@ -22,7 +22,7 @@ public class Threads {
     public static void main(String[] args) {
         SynchronizedCounter counter = new SynchronizedCounter();
 
-        int  n = 10000;
+        int n = 10000;
         long start = System.currentTimeMillis();
 
         for (int i = 0; i < n; ++i) {
