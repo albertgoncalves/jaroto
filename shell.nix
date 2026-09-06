@@ -1,7 +1,7 @@
 with import <nixpkgs> {};
-mkShell.override { stdenv = llvmPackages_19.stdenv; } {
+mkShell.override { stdenv = llvmPackages_21.stdenv; } {
     buildInputs = [
-        openjdk
+        openjdk25
         shellcheck
     ];
     shellHook = ''

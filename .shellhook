@@ -11,7 +11,7 @@ export flags=(
     -d "$WD/build"
     -deprecation
     -g
-    -source 21 --enable-preview
+    -source 25 --enable-preview
     -Werror
     -Xlint:all
     -Xmaxerrs 1
