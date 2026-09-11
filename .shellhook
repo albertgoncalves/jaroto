@@ -26,3 +26,5 @@ runj () {
 
 export -f runj
 alias javap="javap -v -l -c -s -p -constants"
+alias javajdb="java -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=7896 --enable-preview -ea -cp .:$WD/build"
+alias jdb="jdb -attach 7896 -sourcepath $WD/src/"
