@@ -43,11 +43,11 @@ class List<T> {
 }
 
 public class LazyFibs {
-    interface Func<T> {
+    interface BinOp<T> {
         T call(T a, T b);
     }
 
-    static <T> List<T> zipWith(Func<T> func, List<T> xs, List<T> ys) {
+    static <T> List<T> zipWith(BinOp<T> func, List<T> xs, List<T> ys) {
         // clang-format off
         return new List<T>(
             func.call(xs.head, ys.head),
