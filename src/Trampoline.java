@@ -1,15 +1,8 @@
 import java.util.ArrayList;
+import java.util.function.IntConsumer;
 
 public class Trampoline {
-    interface Void {
-        void run();
-    }
-
-    interface IntVoid {
-        void run(int x);
-    }
-
-    ArrayList<Void> thunks = new ArrayList<Void>();
+    ArrayList<Runnable> thunks = new ArrayList<Runnable>();
 
     void runAll() {
         while (!thunks.isEmpty()) {
@@ -17,9 +10,9 @@ public class Trampoline {
         }
     }
 
-    void ackermannPeterCpsTrampoline(IntVoid k, int m, int n) {
+    void ackermannPeterCpsTrampoline(IntConsumer k, int m, int n) {
         if (m == 0) {
-            thunks.addLast(() -> { k.run(n + 1); });
+            thunks.addLast(() -> { k.accept(n + 1); });
         } else if (n == 0) {
             thunks.addLast(() -> { ackermannPeterCpsTrampoline(k, m - 1, 1); });
         } else {

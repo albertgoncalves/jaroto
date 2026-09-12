@@ -1,19 +1,18 @@
-class Lazy<T> {
-    final Func<T> func;
-    private T value;
-    Func<T> cache;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
-    interface Func<T> {
-        T call();
-    }
+class Lazy<T> {
+    final Supplier<T> func;
+    private T value;
+    Supplier<T> cache;
 
     private T force() {
-        this.value = func.call();
+        this.value = func.get();
         this.cache = () -> this.value;
         return this.value;
     }
 
-    public Lazy(Func<T> func) {
+    public Lazy(Supplier<T> func) {
         this.value = null;
         this.func = func;
         this.cache = () -> this.force();
@@ -30,7 +29,7 @@ class List<T> {
     }
 
     public List<T> tail() {
-        return this._tail.cache.call();
+        return this._tail.cache.get();
     }
 
     public List<T> drop(int n) {
@@ -43,14 +42,10 @@ class List<T> {
 }
 
 public class LazyFibs {
-    interface BinOp<T> {
-        T call(T a, T b);
-    }
-
-    static <T> List<T> zipWith(BinOp<T> func, List<T> xs, List<T> ys) {
+    static <T> List<T> zipWith(BiFunction<T, T, T> func, List<T> xs, List<T> ys) {
         // clang-format off
         return new List<T>(
-            func.call(xs.head, ys.head),
+            func.apply(xs.head, ys.head),
             new Lazy<List<T>>(() -> {
                 return zipWith(func, xs.tail(), ys.tail());
             })
