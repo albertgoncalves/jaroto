@@ -21,7 +21,7 @@ runj () {
     handle=$(basename "${1%%.*}")
     clang-format -i -verbose "$1" || return
     javac "${flags[@]}" "$1" || return
-    java --enable-preview -ea -cp .:"$WD/build" "$handle" $@
+    java --enable-preview -ea -cp .:"$WD/build" "$handle" "${@:2}"
 }
 
 export -f runj
